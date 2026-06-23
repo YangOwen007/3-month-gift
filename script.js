@@ -1,23 +1,56 @@
 const stripContainer = document.getElementById("background-strips");
+const mobileBreakpoint = window.matchMedia("(max-width: 560px)");
+const tabletBreakpoint = window.matchMedia("(max-width: 860px)");
 
-for (let column = 0; column < 5; column += 1) {
-  const strip = document.createElement("div");
-  strip.className = "strip";
-
-  for (let frame = 0; frame < 6; frame += 1) {
-    const frameEl = document.createElement("div");
-    frameEl.className = "strip-frame";
-    strip.appendChild(frameEl);
+const getColumnCount = () => {
+  if (mobileBreakpoint.matches) {
+    return 2;
   }
 
-  stripContainer.appendChild(strip);
-}
+  if (tabletBreakpoint.matches) {
+    return 3;
+  }
+
+  return 5;
+};
+
+const buildBackgroundStrips = () => {
+  const columnCount = getColumnCount();
+  const gridStyles = window.getComputedStyle(stripContainer);
+  const gap = Number.parseFloat(gridStyles.columnGap || gridStyles.gap || "32");
+  const containerWidth = stripContainer.clientWidth || window.innerWidth;
+  const stripWidth =
+    (containerWidth - gap * (columnCount - 1)) / Math.max(columnCount, 1);
+  const frameHeight = stripWidth * (4 / 3) + gap;
+  const requiredHeight =
+    document.documentElement.scrollHeight + window.innerHeight * 1.5;
+  const frameCount = Math.max(
+    12,
+    Math.ceil(requiredHeight / Math.max(frameHeight, 1)) + 2
+  );
+
+  stripContainer.replaceChildren();
+
+  for (let column = 0; column < columnCount; column += 1) {
+    const strip = document.createElement("div");
+    strip.className = "strip";
+
+    for (let frame = 0; frame < frameCount; frame += 1) {
+      const frameEl = document.createElement("div");
+      frameEl.className = "strip-frame";
+      strip.appendChild(frameEl);
+    }
+
+    stripContainer.appendChild(strip);
+  }
+};
 
 const revealObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         entry.target.classList.add("is-visible");
+        revealObserver.unobserve(entry.target);
       }
     });
   },
@@ -31,10 +64,36 @@ document.querySelectorAll(".reveal").forEach((element) => {
   revealObserver.observe(element);
 });
 
+let latestScrollY = 0;
+let rafScheduled = false;
+let resizeTimeout;
+
 const updateParallax = () => {
-  const scrollY = window.scrollY || window.pageYOffset;
-  stripContainer.style.transform = `translate3d(0, ${scrollY * 0.18}px, 0)`;
+  stripContainer.style.transform = `translate3d(0, ${latestScrollY * 0.14}px, 0)`;
+  rafScheduled = false;
 };
 
-updateParallax();
-window.addEventListener("scroll", updateParallax, { passive: true });
+const requestParallaxUpdate = () => {
+  latestScrollY = window.scrollY || window.pageYOffset;
+
+  if (rafScheduled) {
+    return;
+  }
+
+  rafScheduled = true;
+  window.requestAnimationFrame(updateParallax);
+};
+
+const rebuildBackground = () => {
+  window.clearTimeout(resizeTimeout);
+  resizeTimeout = window.setTimeout(() => {
+    buildBackgroundStrips();
+    requestParallaxUpdate();
+  }, 80);
+};
+
+buildBackgroundStrips();
+requestParallaxUpdate();
+
+window.addEventListener("scroll", requestParallaxUpdate, { passive: true });
+window.addEventListener("resize", rebuildBackground);

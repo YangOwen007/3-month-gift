@@ -36,22 +36,23 @@ img {
 .page-shell {
   position: relative;
   overflow-x: clip;
+  isolation: isolate;
 }
 
 .background-collage {
-  position: fixed;
+  position: absolute;
   inset: 0;
   z-index: -2;
   overflow: hidden;
+  pointer-events: none;
 }
 
 .background-overlay {
   position: absolute;
   inset: 0;
   background:
-    linear-gradient(180deg, rgba(255, 250, 245, 0.52), rgba(248, 235, 227, 0.72)),
+    linear-gradient(180deg, rgba(255, 250, 245, 0.72), rgba(248, 235, 227, 0.84)),
     radial-gradient(circle at top right, rgba(255, 255, 255, 0.35), transparent 40%);
-  backdrop-filter: blur(16px);
 }
 
 .background-strips {
@@ -61,6 +62,8 @@ img {
   grid-template-columns: repeat(5, minmax(9rem, 1fr));
   gap: 2rem;
   transform: translate3d(0, 0, 0);
+  will-change: transform;
+  filter: blur(10px);
 }
 
 .strip {
@@ -68,7 +71,6 @@ img {
   flex-direction: column;
   gap: 1.5rem;
   opacity: 0.55;
-  filter: blur(2px);
 }
 
 .strip:nth-child(even) {
@@ -161,7 +163,7 @@ img {
   border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: 1.75rem;
   box-shadow: 0 1.5rem 3rem rgba(107, 83, 69, 0.14);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(6px);
 }
 
 .note-card::before {
@@ -268,6 +270,7 @@ img {
   transition:
     opacity 700ms ease,
     transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+  will-change: opacity, transform;
 }
 
 .reveal.is-visible {
