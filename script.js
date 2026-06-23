@@ -25,8 +25,8 @@ const buildBackgroundStrips = () => {
   const requiredHeight =
     document.documentElement.scrollHeight + window.innerHeight * 1.5;
   const frameCount = Math.max(
-    12,
-    Math.ceil(requiredHeight / Math.max(frameHeight, 1)) + 2
+    10,
+    Math.min(18, Math.ceil(requiredHeight / Math.max(frameHeight, 1)) + 1)
   );
 
   stripContainer.replaceChildren();
@@ -69,7 +69,7 @@ let rafScheduled = false;
 let resizeTimeout;
 
 const updateParallax = () => {
-  stripContainer.style.transform = `translate3d(0, ${latestScrollY * 0.14}px, 0)`;
+  stripContainer.style.transform = `translate3d(0, ${latestScrollY * 0.1}px, 0)`;
   rafScheduled = false;
 };
 
