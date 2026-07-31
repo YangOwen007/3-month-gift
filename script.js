@@ -1,6 +1,8 @@
 const stripContainer = document.getElementById("background-strips");
 const mobileBreakpoint = window.matchMedia("(max-width: 560px)");
 const tabletBreakpoint = window.matchMedia("(max-width: 860px)");
+const PARALLAX_FACTOR = 0.08;
+const BACKGROUND_BUFFER = 192;
 
 const getColumnCount = () => {
   if (mobileBreakpoint.matches) {
@@ -22,14 +24,23 @@ const buildBackgroundStrips = () => {
   const stripWidth =
     (containerWidth - gap * (columnCount - 1)) / Math.max(columnCount, 1);
   const frameHeight = stripWidth * (4 / 3) + gap;
-  const requiredHeight =
-    document.documentElement.scrollHeight + window.innerHeight * 1.5;
+  const pageHeight = document.documentElement.scrollHeight;
+  const viewportHeight = window.innerHeight;
+  const scrollRange = Math.max(0, pageHeight - viewportHeight);
+  const parallaxOverscan =
+    Math.ceil(scrollRange * PARALLAX_FACTOR) + BACKGROUND_BUFFER;
+  const requiredHeight = pageHeight + parallaxOverscan * 2;
   const frameCount = Math.max(
     10,
-    Math.min(18, Math.ceil(requiredHeight / Math.max(frameHeight, 1)) + 1)
+    Math.ceil(requiredHeight / Math.max(frameHeight, 1)) + 1
   );
 
-  stripContainer.replaceChildren();
+  // Extend the background above and below the page so the slower parallax
+  // motion never exposes an empty edge near the end of the scroll.
+  stripContainer.style.top = `${-parallaxOverscan}px`;
+  stripContainer.style.height = `${requiredHeight}px`;
+
+  const stripFragment = document.createDocumentFragment();
 
   for (let column = 0; column < columnCount; column += 1) {
     const strip = document.createElement("div");
@@ -41,8 +52,10 @@ const buildBackgroundStrips = () => {
       strip.appendChild(frameEl);
     }
 
-    stripContainer.appendChild(strip);
+    stripFragment.appendChild(strip);
   }
+
+  stripContainer.replaceChildren(stripFragment);
 };
 
 const revealObserver = new IntersectionObserver(
@@ -69,7 +82,7 @@ let rafScheduled = false;
 let resizeTimeout;
 
 const updateParallax = () => {
-  stripContainer.style.transform = `translate3d(0, ${latestScrollY * 0.1}px, 0)`;
+  stripContainer.style.transform = `translate3d(0, ${latestScrollY * PARALLAX_FACTOR}px, 0)`;
   rafScheduled = false;
 };
 
@@ -97,3 +110,4 @@ requestParallaxUpdate();
 
 window.addEventListener("scroll", requestParallaxUpdate, { passive: true });
 window.addEventListener("resize", rebuildBackground);
+window.addEventListener("load", rebuildBackground);

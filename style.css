@@ -49,16 +49,20 @@ img {
   background:
     linear-gradient(180deg, rgba(255, 250, 245, 0.72), rgba(248, 235, 227, 0.84)),
     radial-gradient(circle at top right, rgba(255, 255, 255, 0.35), transparent 40%);
+  contain: paint;
 }
 
 .background-strips {
   position: absolute;
-  inset: -12rem -4rem;
+  top: -12rem;
+  left: -4rem;
+  right: -4rem;
   display: grid;
   grid-template-columns: repeat(5, minmax(9rem, 1fr));
   gap: 2rem;
   transform: translate3d(0, 0, 0);
   will-change: transform;
+  contain: layout paint;
 }
 
 .strip {
@@ -93,7 +97,7 @@ img {
       rgba(255, 255, 255, 0.02) 24px
     );
   border: 0.55rem solid rgba(255, 255, 255, 0.26);
-  box-shadow: 0 0.6rem 1.4rem rgba(106, 82, 67, 0.08);
+  box-shadow: 0 0.45rem 1rem rgba(106, 82, 67, 0.06);
 }
 
 .hero {
@@ -164,6 +168,7 @@ img {
   border: 1px solid rgba(255, 255, 255, 0.7);
   border-radius: 1.75rem;
   box-shadow: 0 1.5rem 3rem rgba(107, 83, 69, 0.14);
+  contain: paint;
 }
 
 .note-card::before {
@@ -276,6 +281,7 @@ img {
 .reveal.is-visible {
   opacity: 1;
   transform: translate3d(0, 0, 0);
+  will-change: auto;
 }
 
 @media (max-width: 860px) {
