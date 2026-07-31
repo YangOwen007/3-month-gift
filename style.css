@@ -64,46 +64,6 @@ img {
   right: clamp(0.5rem, 2vw, 2rem);
 }
 
-.sticker-slot:nth-child(1) {
-  top: 14rem;
-}
-
-.sticker-slot:nth-child(2) {
-  top: 32rem;
-}
-
-.sticker-slot:nth-child(3) {
-  top: 58rem;
-}
-
-.sticker-slot:nth-child(4) {
-  top: 84rem;
-}
-
-.sticker-slot:nth-child(5) {
-  top: 116rem;
-}
-
-.sticker-slot:nth-child(6) {
-  top: 146rem;
-}
-
-.sticker-slot:nth-child(7) {
-  top: 176rem;
-}
-
-.sticker-slot:nth-child(8) {
-  top: 206rem;
-}
-
-.sticker-slot:nth-child(9) {
-  top: 236rem;
-}
-
-.sticker-slot:nth-child(10) {
-  top: 266rem;
-}
-
 .sticker-card {
   position: relative;
   width: 100%;

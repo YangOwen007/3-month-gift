@@ -1,4 +1,5 @@
 const stripContainer = document.getElementById("background-strips");
+const stickerSlots = Array.from(document.querySelectorAll(".sticker-slot"));
 const mobileBreakpoint = window.matchMedia("(max-width: 560px)");
 const tabletBreakpoint = window.matchMedia("(max-width: 860px)");
 const PARALLAX_FACTOR = 0.08;
@@ -58,6 +59,23 @@ const buildBackgroundStrips = () => {
   stripContainer.replaceChildren(stripFragment);
 };
 
+const buildStickerLayout = () => {
+  if (tabletBreakpoint.matches || stickerSlots.length === 0) {
+    return;
+  }
+
+  const pageHeight = document.documentElement.scrollHeight;
+  const topPadding = 224;
+  const bottomPadding = 240;
+  const usableHeight = Math.max(0, pageHeight - topPadding - bottomPadding);
+  const step = usableHeight / Math.max(stickerSlots.length - 1, 1);
+
+  stickerSlots.forEach((slot, index) => {
+    const top = topPadding + step * index;
+    slot.style.top = `${top}px`;
+  });
+};
+
 const revealObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -101,11 +119,13 @@ const rebuildBackground = () => {
   window.clearTimeout(resizeTimeout);
   resizeTimeout = window.setTimeout(() => {
     buildBackgroundStrips();
+    buildStickerLayout();
     requestParallaxUpdate();
   }, 80);
 };
 
 buildBackgroundStrips();
+buildStickerLayout();
 requestParallaxUpdate();
 
 window.addEventListener("scroll", requestParallaxUpdate, { passive: true });
