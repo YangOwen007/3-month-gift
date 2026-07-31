@@ -1,9 +1,36 @@
 const stripContainer = document.getElementById("background-strips");
 const stickerSlots = Array.from(document.querySelectorAll(".sticker-slot"));
+const pageShell = document.querySelector(".page-shell");
+const storyColumn = document.querySelector(".story-column");
 const mobileBreakpoint = window.matchMedia("(max-width: 560px)");
 const tabletBreakpoint = window.matchMedia("(max-width: 860px)");
 const PARALLAX_FACTOR = 0.08;
 const BACKGROUND_BUFFER = 192;
+let lastMeasuredHeight = 0;
+
+const getMeasuredPageHeight = () => {
+  const lastStoryBlock = storyColumn?.lastElementChild;
+  const shellHeight = pageShell?.scrollHeight ?? 0;
+  const documentHeight = Math.max(
+    document.documentElement.scrollHeight,
+    document.body.scrollHeight
+  );
+
+  if (!storyColumn || !lastStoryBlock) {
+    return Math.max(shellHeight, documentHeight);
+  }
+
+  const storyStyles = window.getComputedStyle(storyColumn);
+  const storyBottomPadding = Number.parseFloat(storyStyles.paddingBottom || "0");
+  const storyContentBottom =
+    storyColumn.offsetTop + lastStoryBlock.offsetTop + lastStoryBlock.offsetHeight;
+
+  return Math.max(
+    documentHeight,
+    shellHeight,
+    Math.ceil(storyContentBottom + storyBottomPadding)
+  );
+};
 
 const getColumnCount = () => {
   if (mobileBreakpoint.matches) {
@@ -25,7 +52,7 @@ const buildBackgroundStrips = () => {
   const stripWidth =
     (containerWidth - gap * (columnCount - 1)) / Math.max(columnCount, 1);
   const frameHeight = stripWidth * (4 / 3) + gap;
-  const pageHeight = document.documentElement.scrollHeight;
+  const pageHeight = getMeasuredPageHeight();
   const viewportHeight = window.innerHeight;
   const scrollRange = Math.max(0, pageHeight - viewportHeight);
   const parallaxOverscan =
@@ -64,11 +91,13 @@ const buildStickerLayout = () => {
     return;
   }
 
-  const pageHeight = document.documentElement.scrollHeight;
+  const pageHeight = getMeasuredPageHeight();
   const topPadding = 224;
   const bottomPadding = 240;
   const usableHeight = Math.max(0, pageHeight - topPadding - bottomPadding);
   const step = usableHeight / Math.max(stickerSlots.length - 1, 1);
+
+  lastMeasuredHeight = pageHeight;
 
   stickerSlots.forEach((slot, index) => {
     const top = topPadding + step * index;
@@ -106,6 +135,12 @@ const updateParallax = () => {
 
 const requestParallaxUpdate = () => {
   latestScrollY = window.scrollY || window.pageYOffset;
+
+  const measuredHeight = getMeasuredPageHeight();
+  if (Math.abs(measuredHeight - lastMeasuredHeight) > 24) {
+    buildBackgroundStrips();
+    buildStickerLayout();
+  }
 
   if (rafScheduled) {
     return;
