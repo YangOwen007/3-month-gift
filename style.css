@@ -43,6 +43,41 @@ img {
   pointer-events: none;
 }
 
+.update-banner {
+  position: sticky;
+  top: 0.85rem;
+  z-index: 5;
+  width: min(26rem, calc(100% - 1.5rem));
+  margin: 0 auto;
+  padding: 0.8rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  border-radius: 1.25rem;
+  background: rgba(255, 249, 240, 0.9);
+  box-shadow: 0 0.75rem 1.6rem rgba(107, 83, 69, 0.12);
+  text-align: center;
+  backdrop-filter: blur(6px);
+}
+
+.update-banner-label,
+.update-banner-value {
+  margin: 0;
+}
+
+.update-banner-label {
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.update-banner-value {
+  margin-top: 0.18rem;
+  font-family: "Gaegu", cursive;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--accent-deep);
+}
+
 .background-overlay {
   position: absolute;
   inset: 0;
@@ -327,6 +362,12 @@ img {
 }
 
 @media (max-width: 560px) {
+  .update-banner {
+    top: 0.5rem;
+    width: calc(100% - 1rem);
+    padding: 0.7rem 0.85rem;
+  }
+
   .hero {
     padding-top: 5rem;
   }
