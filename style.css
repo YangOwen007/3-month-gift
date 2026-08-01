@@ -117,6 +117,18 @@ img {
   transform: scale(3);
 }
 
+.sticker-slot-spark {
+  width: clamp(8.2rem, 13vw, 10.6rem);
+}
+
+.sticker-image-face-spark {
+  transform: scale(2) rotate(-6deg);
+}
+
+.sticker-slot-spark .sticker-face-secondary.sticker-image-face-spark {
+  transform: scale(2) rotate(9deg);
+}
+
 .sticker-face-primary {
   animation: sticker-swap-primary 6s steps(1, end) infinite;
 }
