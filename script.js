@@ -13,17 +13,15 @@ const BACKGROUND_IMAGES = [
 ];
 const PARALLAX_FACTOR = 0.08;
 const BACKGROUND_BUFFER = 320;
-let lastMeasuredHeight = 0;
 
 const getMeasuredPageHeight = () => {
   const lastStoryBlock = storyColumn?.lastElementChild;
   const heroBottom = heroSection
     ? heroSection.offsetTop + heroSection.offsetHeight
     : 0;
-  const shellHeight = pageShell?.offsetHeight ?? 0;
 
   if (!storyColumn || !lastStoryBlock) {
-    return Math.max(shellHeight, heroBottom);
+    return Math.ceil(heroBottom);
   }
 
   const storyStyles = window.getComputedStyle(storyColumn);
@@ -34,7 +32,7 @@ const getMeasuredPageHeight = () => {
   // Measure only the real in-flow content so the oversized decorative
   // background never feeds back into sticker placement or page length.
   return Math.ceil(
-    Math.max(shellHeight, heroBottom, storyContentBottom + storyBottomPadding)
+    Math.max(heroBottom, storyContentBottom + storyBottomPadding)
   );
 };
 
@@ -76,7 +74,6 @@ const buildBackgroundStrips = () => {
   // never exposes an empty edge near the bottom of the page.
   stripContainer.style.top = `${-parallaxOverscan}px`;
   stripContainer.style.height = `${requiredHeight}px`;
-  lastMeasuredHeight = pageHeight;
 
   const stripFragment = document.createDocumentFragment();
 
@@ -126,8 +123,6 @@ const buildStickerLayout = () => {
   const usableHeight = Math.max(0, pageHeight - topPadding - bottomPadding);
   const step = usableHeight / Math.max(stickerSlots.length - 1, 1);
 
-  lastMeasuredHeight = pageHeight;
-
   stickerSlots.forEach((slot, index) => {
     const top = topPadding + step * index;
     slot.style.top = `${top}px`;
@@ -164,12 +159,6 @@ const updateParallax = () => {
 
 const requestParallaxUpdate = () => {
   latestScrollY = window.scrollY || window.pageYOffset;
-
-  const measuredHeight = getMeasuredPageHeight();
-  if (Math.abs(measuredHeight - lastMeasuredHeight) > 24) {
-    buildBackgroundStrips();
-    buildStickerLayout();
-  }
 
   if (rafScheduled) {
     return;
