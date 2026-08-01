@@ -64,6 +64,10 @@ img {
   right: clamp(0.5rem, 2vw, 2rem);
 }
 
+.sticker-slot-cat {
+  width: clamp(9.5rem, 16vw, 12.8rem);
+}
+
 .sticker-card {
   position: relative;
   width: 100%;
@@ -105,6 +109,12 @@ img {
   background: transparent;
   box-shadow: none;
   object-fit: contain;
+  transform: scale(2);
+  transform-origin: center;
+}
+
+.sticker-slot-cat .sticker-face-secondary.sticker-image-face {
+  transform: scale(3);
 }
 
 .sticker-face-primary {
