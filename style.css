@@ -141,6 +141,14 @@ img {
   transform: scale(2) rotate(-4deg);
 }
 
+.sticker-slot-yawn {
+  width: clamp(8.3rem, 13.2vw, 10.8rem);
+}
+
+.sticker-image-face-yawn {
+  transform: scale(2.05) rotate(7deg);
+}
+
 .sticker-face-primary {
   animation: sticker-swap-primary 6s steps(1, end) infinite;
 }
