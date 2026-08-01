@@ -133,6 +133,14 @@ img {
   transform: scale(1.9) rotate(4deg);
 }
 
+.sticker-slot-sleep {
+  width: clamp(8.2rem, 13vw, 10.6rem);
+}
+
+.sticker-image-face-sleep {
+  transform: scale(2) rotate(-4deg);
+}
+
 .sticker-face-primary {
   animation: sticker-swap-primary 6s steps(1, end) infinite;
 }
