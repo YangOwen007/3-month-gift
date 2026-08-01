@@ -84,18 +84,25 @@ const buildBackgroundStrips = () => {
     for (let frame = 0; frame < frameCount; frame += 1) {
       const photoFrame = document.createElement("figure");
       photoFrame.className = "strip-frame";
+      const isPhotoFrame = frame % 2 === 0;
 
-      // Repeating the real photo set keeps the background faithful to the
-      // reference strip while still filling the whole page height.
-      const image = document.createElement("img");
-      image.className = "strip-photo";
-      image.src =
-        BACKGROUND_IMAGES[(frame + column) % BACKGROUND_IMAGES.length];
-      image.alt = "";
-      image.loading = frame < 8 ? "eager" : "lazy";
-      image.decoding = "async";
+      // Every other slot stays black so the strip breathes more like the
+      // reference photobooth sample instead of feeling packed wall-to-wall.
+      if (isPhotoFrame) {
+        const image = document.createElement("img");
+        image.className = "strip-photo";
+        image.src =
+          BACKGROUND_IMAGES[
+            (Math.floor(frame / 2) + column) % BACKGROUND_IMAGES.length
+          ];
+        image.alt = "";
+        image.loading = frame < 8 ? "eager" : "lazy";
+        image.decoding = "async";
+        photoFrame.appendChild(image);
+      } else {
+        photoFrame.classList.add("strip-frame-empty");
+      }
 
-      photoFrame.appendChild(image);
       strip.appendChild(photoFrame);
     }
 
