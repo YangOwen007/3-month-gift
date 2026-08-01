@@ -193,9 +193,9 @@ img {
 }
 
 .strip-frame-empty {
-  border-color: rgba(255, 255, 255, 0.16);
+  border-color: rgba(233, 220, 206, 0.92);
   background:
-    linear-gradient(180deg, rgba(18, 15, 16, 0.98), rgba(6, 5, 7, 1));
+    linear-gradient(180deg, var(--paper-strong), #f6e7d8);
 }
 
 .strip-photo {
