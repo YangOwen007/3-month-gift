@@ -125,8 +125,12 @@ img {
   transform: scale(2) rotate(-6deg);
 }
 
-.sticker-slot-spark .sticker-face-secondary.sticker-image-face-spark {
-  transform: scale(2) rotate(9deg);
+.sticker-slot-tongue {
+  width: clamp(8rem, 12.5vw, 10rem);
+}
+
+.sticker-image-face-tongue {
+  transform: scale(1.9) rotate(4deg);
 }
 
 .sticker-face-primary {
