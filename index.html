@@ -10,17 +10,13 @@
       href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Patrick+Hand&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="./style.css?v=16" />
+    <link rel="stylesheet" href="./style.css?v=17" />
   </head>
   <body>
     <div class="page-shell">
       <div class="update-banner">
         <p class="update-banner-label">Temporary update tracker</p>
-        <p class="update-banner-value">Version 16</p>
-        <p class="update-banner-hint">
-          Editing mode is on. Click any heading or text box to type directly on
-          the page.
-        </p>
+        <p class="update-banner-value">Version 17</p>
       </div>
 
       <div class="background-collage" aria-hidden="true">
@@ -29,7 +25,7 @@
       </div>
 
       <div class="sticker-layer" aria-hidden="true">
-        <!-- Temporary sticker placeholders so we can tune spacing and motion. -->
+        <!-- Sticker placements repeat down the full page so the sides feel filled in. -->
         <div class="sticker-slot sticker-slot-left sticker-slot-cat">
           <div class="sticker-card">
             <img
@@ -85,45 +81,69 @@
             />
           </div>
         </div>
-        <div class="sticker-slot sticker-slot-right">
+        <div class="sticker-slot sticker-slot-right sticker-slot-cat">
           <div class="sticker-card">
-            <span class="sticker-face sticker-face-primary">sticker 1</span>
-            <span class="sticker-face sticker-face-secondary">sticker 2</span>
+            <img
+              class="sticker-face sticker-face-primary sticker-image-face"
+              src="./assets/stickers/cat-sticker-1.png"
+              alt=""
+            />
+            <img
+              class="sticker-face sticker-face-secondary sticker-image-face"
+              src="./assets/stickers/cat-sticker-2.png"
+              alt=""
+            />
           </div>
         </div>
-        <div class="sticker-slot sticker-slot-left">
+        <div class="sticker-slot sticker-slot-left sticker-slot-spark">
           <div class="sticker-card">
-            <span class="sticker-face sticker-face-primary">sticker 1</span>
-            <span class="sticker-face sticker-face-secondary">sticker 2</span>
+            <img
+              class="sticker-face sticker-image-face sticker-image-face-spark"
+              src="./assets/stickers/cat-sticker-spark.png"
+              alt=""
+            />
           </div>
         </div>
-        <div class="sticker-slot sticker-slot-right">
+        <div class="sticker-slot sticker-slot-right sticker-slot-tongue">
           <div class="sticker-card">
-            <span class="sticker-face sticker-face-primary">sticker 1</span>
-            <span class="sticker-face sticker-face-secondary">sticker 2</span>
+            <img
+              class="sticker-face sticker-image-face sticker-image-face-tongue"
+              src="./assets/stickers/cat-sticker-tongue.png"
+              alt=""
+            />
           </div>
         </div>
-        <div class="sticker-slot sticker-slot-left">
+        <div class="sticker-slot sticker-slot-left sticker-slot-sleep">
           <div class="sticker-card">
-            <span class="sticker-face sticker-face-primary">sticker 1</span>
-            <span class="sticker-face sticker-face-secondary">sticker 2</span>
+            <img
+              class="sticker-face sticker-face-primary sticker-image-face sticker-image-face-sleep"
+              src="./assets/stickers/cat-sticker-sleep-1.png"
+              alt=""
+            />
+            <img
+              class="sticker-face sticker-face-secondary sticker-image-face sticker-image-face-sleep"
+              src="./assets/stickers/cat-sticker-sleep-2.png"
+              alt=""
+            />
           </div>
         </div>
-        <div class="sticker-slot sticker-slot-right">
+        <div class="sticker-slot sticker-slot-right sticker-slot-yawn">
           <div class="sticker-card">
-            <span class="sticker-face sticker-face-primary">sticker 1</span>
-            <span class="sticker-face sticker-face-secondary">sticker 2</span>
+            <img
+              class="sticker-face sticker-image-face sticker-image-face-yawn"
+              src="./assets/stickers/cat-sticker-yawn.png"
+              alt=""
+            />
           </div>
         </div>
       </div>
 
       <header class="hero reveal">
         <p class="eyebrow">Scrapbook Demo</p>
-        <h1>A scrolling gift page with room for your story.</h1>
+        <h1>A 3 month gift</h1>
         <p class="hero-copy">
-          This test version uses placeholder cards so we can tune spacing,
-          animation, and the overall scrapbook vibe before we drop in your real
-          photos and words.
+          To my love, Kathy Chen<br />
+          From your boyfriend (what?? I get to be your bf?!?)
         </p>
       </header>
 
@@ -133,11 +153,8 @@
             <div class="photo-placeholder">side photo</div>
           </div>
           <article class="note-card">
-            <p class="note-kicker">Paragraph 1</p>
-            <p>
-              This is where your first memory or message will go. The text block
-              stays centered so it feels like the heart of the page.
-            </p>
+            <p class="note-kicker">I love u</p>
+            <p>I know that we're so very far away, but I want u to know you still make my day</p>
           </article>
           <div class="side-photo side-photo-right">
             <div class="photo-placeholder">side photo</div>
@@ -149,7 +166,7 @@
             <div class="photo-placeholder photo-placeholder-large">
               center photo 1
             </div>
-            <figcaption>A featured photo section can sit on its own.</figcaption>
+            <figcaption>Look love, it's us!</figcaption>
           </figure>
         </section>
 
@@ -158,11 +175,8 @@
             <div class="photo-placeholder">side photo</div>
           </div>
           <article class="note-card">
-            <p class="note-kicker">Paragraph 2</p>
-            <p>
-              Another text moment appears with extra space around it, so only one
-              or two story pieces are visible as someone scrolls.
-            </p>
+            <p class="note-kicker">I love uu</p>
+            <p>You're my waking thought, my first smile, my daydream, my morning prayer</p>
           </article>
         </section>
 
@@ -171,11 +185,8 @@
             <div class="photo-placeholder">side photo</div>
           </div>
           <article class="note-card">
-            <p class="note-kicker">Paragraph 3</p>
-            <p>
-              We can keep the copy short and sweet, or let certain sections have
-              longer paragraphs if you want a more letter-like tone.
-            </p>
+            <p class="note-kicker">I love uuu</p>
+            <p>You're my break from work, my goal in the gym, my motivation while biking</p>
           </article>
         </section>
 
@@ -196,21 +207,15 @@
             <div class="photo-placeholder">side photo</div>
           </div>
           <article class="note-card">
-            <p class="note-kicker">Paragraph 4</p>
-            <p>
-              Side photos can tilt slightly so they feel like taped-on disposable
-              camera prints instead of a rigid gallery.
-            </p>
+            <p class="note-kicker">I love u more</p>
+            <p>You're my evening wish, my replaying thought before bed, my constant dream.</p>
           </article>
         </section>
 
         <section class="story-block story-block-text reveal">
           <article class="note-card">
-            <p class="note-kicker">Paragraph 5</p>
-            <p>
-              Some sections can be just text if we want a quieter pause between
-              more photo-heavy beats.
-            </p>
+            <p class="note-kicker">I love u most</p>
+            <p>I think about you a lot because I'm so so lucky to have you</p>
           </article>
           <div class="side-photo side-photo-right">
             <div class="photo-placeholder">side photo</div>
@@ -231,10 +236,10 @@
             <div class="photo-placeholder">side photo</div>
           </div>
           <article class="note-card">
-            <p class="note-kicker">Paragraph 6</p>
+            <p class="note-kicker">I love u mostest</p>
             <p>
-              This layout is meant to feel soft and cute, with lots of breathing
-              room and gentle motion instead of fast effects.
+              You're the cutest in the world, and I find myself staring at my homescreen
+              wayyyy too often (I'm dating a model!)
             </p>
           </article>
           <div class="side-photo side-photo-right">
@@ -247,10 +252,10 @@
             <div class="photo-placeholder">side photo</div>
           </div>
           <article class="note-card">
-            <p class="note-kicker">Paragraph 7</p>
+            <p class="note-kicker">I love u mostest +1</p>
             <p>
-              We can also mix in tiny labels, dates, or place names for a more
-              scrapbook-journal feeling.
+              You're so loving and kind, and I'm always so happy to see 4+ new messages
+              (emphasis on the + )
             </p>
           </article>
         </section>
@@ -269,10 +274,10 @@
             <div class="photo-placeholder">side photo</div>
           </div>
           <article class="note-card">
-            <p class="note-kicker">Paragraph 8</p>
+            <p class="note-kicker">I love u mostest +6</p>
             <p>
-              The final page can easily handle ten or more text moments without
-              feeling crowded if we preserve this spacing.
+              And You're the smartest and most hardworking person I know, and you're
+              going to achieve great things
             </p>
           </article>
         </section>
@@ -282,10 +287,10 @@
             <div class="photo-placeholder">side photo</div>
           </div>
           <article class="note-card">
-            <p class="note-kicker">Paragraph 9</p>
+            <p class="note-kicker">haha u thought I would say 7 didn't you</p>
             <p>
-              This is also where we could add one especially meaningful note with
-              a little more visual emphasis.
+              It's impossible to list the rest here, but know that you're the most
+              amazing person I've ever met. I love you so so much.
             </p>
           </article>
           <div class="side-photo side-photo-right">
@@ -307,16 +312,13 @@
             <div class="photo-placeholder">side photo</div>
           </div>
           <article class="note-card">
-            <p class="note-kicker">Paragraph 10</p>
-            <p>
-              We can close with a final note, a signature, or a little “I love
-              you” section after the last photo.
-            </p>
+            <p class="note-kicker">I love u to the moon and back, and round and round again</p>
+            <p>Can't wait to see you again cuteness! From your love, Chicken Butt</p>
           </article>
         </section>
       </main>
     </div>
 
-    <script src="./script.js?v=16"></script>
+    <script src="./script.js?v=17"></script>
   </body>
 </html>

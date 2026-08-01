@@ -11,17 +11,7 @@ const BACKGROUND_IMAGES = [
   "./assets/background/IMG_2999.JPEG",
 ];
 const PARALLAX_FACTOR = 0.08;
-const BACKGROUND_BUFFER = 192;
-const EDITABLE_STORAGE_KEY = "scrapbook-editable-content-v1";
-const EDITABLE_GROUPS = [
-  { selector: ".hero .eyebrow", prefix: "hero-eyebrow" },
-  { selector: ".hero h1", prefix: "hero-title" },
-  { selector: ".hero-copy", prefix: "hero-copy" },
-  { selector: ".note-kicker", prefix: "note-kicker" },
-  { selector: ".note-card p:last-child", prefix: "note-body" },
-  { selector: ".photo-placeholder", prefix: "photo-placeholder" },
-  { selector: ".featured-photo figcaption", prefix: "photo-caption" },
-];
+const BACKGROUND_BUFFER = 320;
 let lastMeasuredHeight = 0;
 
 const getMeasuredPageHeight = () => {
@@ -72,18 +62,21 @@ const buildBackgroundStrips = () => {
   const pageHeight = getMeasuredPageHeight();
   const viewportHeight = window.innerHeight;
   const scrollRange = Math.max(0, pageHeight - viewportHeight);
-  const parallaxOverscan =
-    Math.ceil(scrollRange * PARALLAX_FACTOR) + BACKGROUND_BUFFER;
-  const requiredHeight = pageHeight + parallaxOverscan * 2;
+  const parallaxOverscan = Math.max(
+    Math.ceil(scrollRange * PARALLAX_FACTOR) + BACKGROUND_BUFFER,
+    viewportHeight + BACKGROUND_BUFFER
+  );
+  const requiredHeight = pageHeight + parallaxOverscan * 2 + viewportHeight;
   const frameCount = Math.max(
     10,
-    Math.ceil(requiredHeight / Math.max(frameHeight, 1)) + 1
+    Math.ceil(requiredHeight / Math.max(frameHeight, 1)) + 3
   );
 
-  // Extend the background above and below the page so the slower parallax
-  // motion never exposes an empty edge near the end of the scroll.
+  // Overscan above and below the document so the slower background motion
+  // never exposes an empty edge near the bottom of the page.
   stripContainer.style.top = `${-parallaxOverscan}px`;
   stripContainer.style.height = `${requiredHeight}px`;
+  lastMeasuredHeight = pageHeight;
 
   const stripFragment = document.createDocumentFragment();
 
@@ -96,8 +89,8 @@ const buildBackgroundStrips = () => {
       photoFrame.className = "strip-frame";
       const isPhotoFrame = frame % 2 === 0;
 
-      // Every other slot stays black so the strip breathes more like the
-      // reference photobooth sample instead of feeling packed wall-to-wall.
+      // Every other slot stays cream so the strips still breathe like the
+      // reference photobooth sample instead of feeling wall-to-wall packed.
       if (isPhotoFrame) {
         const image = document.createElement("img");
         image.className = "strip-photo";
@@ -195,61 +188,19 @@ const rebuildBackground = () => {
   }, 80);
 };
 
-const loadEditableContent = () => {
-  try {
-    return JSON.parse(window.localStorage.getItem(EDITABLE_STORAGE_KEY) || "{}");
-  } catch (error) {
-    return {};
-  }
-};
+// Watch the story column so text or image-size changes rebuild the strips
+// before someone scrolls far enough to notice a cutoff.
+const resizeObserver = new ResizeObserver(() => {
+  rebuildBackground();
+});
 
-const saveEditableContent = (contentMap) => {
-  window.localStorage.setItem(
-    EDITABLE_STORAGE_KEY,
-    JSON.stringify(contentMap)
-  );
-};
-
-const initializeEditableContent = () => {
-  const savedContent = loadEditableContent();
-
-  // Register each text field independently so the pink headings and the body
-  // copy can be edited and saved as separate pieces.
-  EDITABLE_GROUPS.forEach(({ selector, prefix }) => {
-    document.querySelectorAll(selector).forEach((element, index) => {
-      const editId = `${prefix}-${index + 1}`;
-      const savedValue = savedContent[editId];
-
-      element.classList.add("editable-copy");
-      element.dataset.editId = editId;
-      element.setAttribute("contenteditable", "true");
-      element.setAttribute("spellcheck", "true");
-
-      if (typeof savedValue === "string") {
-        element.textContent = savedValue;
-      }
-
-      element.addEventListener("focus", () => {
-        element.classList.add("is-editing");
-      });
-
-      element.addEventListener("blur", () => {
-        element.classList.remove("is-editing");
-      });
-
-      element.addEventListener("input", () => {
-        savedContent[editId] = element.textContent ?? "";
-        saveEditableContent(savedContent);
-        rebuildBackground();
-      });
-    });
-  });
-};
+if (storyColumn) {
+  resizeObserver.observe(storyColumn);
+}
 
 buildBackgroundStrips();
 buildStickerLayout();
 requestParallaxUpdate();
-initializeEditableContent();
 
 window.addEventListener("scroll", requestParallaxUpdate, { passive: true });
 window.addEventListener("resize", rebuildBackground);
