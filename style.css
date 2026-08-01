@@ -309,7 +309,7 @@ img {
   position: relative;
   width: min(72rem, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 3rem 0 10rem;
+  padding: 3rem 0 15rem;
 }
 
 .story-block {
@@ -341,6 +341,7 @@ img {
   border-radius: 1.75rem;
   box-shadow: 0 1.5rem 3rem rgba(107, 83, 69, 0.14);
   contain: paint;
+  text-align: center;
 }
 
 .note-card::before {
