@@ -193,6 +193,12 @@ img {
   color: var(--accent-deep);
 }
 
+.update-banner-hint {
+  margin: 0.35rem 0 0;
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+
 .background-overlay {
   position: absolute;
   inset: 0;
@@ -303,6 +309,29 @@ img {
   margin: 1.2rem auto 0;
   font-size: clamp(1.15rem, 2.2vw, 1.45rem);
   line-height: 1.65;
+}
+
+.editable-copy {
+  border-radius: 0.75rem;
+  cursor: text;
+  transition:
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+  white-space: pre-wrap;
+}
+
+.editable-copy:hover {
+  background: rgba(255, 255, 255, 0.28);
+}
+
+.editable-copy:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(234, 167, 179, 0.34);
+}
+
+.editable-copy.is-editing {
+  background: rgba(255, 255, 255, 0.56);
 }
 
 .story-column {

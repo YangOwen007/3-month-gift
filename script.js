@@ -12,6 +12,16 @@ const BACKGROUND_IMAGES = [
 ];
 const PARALLAX_FACTOR = 0.08;
 const BACKGROUND_BUFFER = 192;
+const EDITABLE_STORAGE_KEY = "scrapbook-editable-content-v1";
+const EDITABLE_GROUPS = [
+  { selector: ".hero .eyebrow", prefix: "hero-eyebrow" },
+  { selector: ".hero h1", prefix: "hero-title" },
+  { selector: ".hero-copy", prefix: "hero-copy" },
+  { selector: ".note-kicker", prefix: "note-kicker" },
+  { selector: ".note-card p:last-child", prefix: "note-body" },
+  { selector: ".photo-placeholder", prefix: "photo-placeholder" },
+  { selector: ".featured-photo figcaption", prefix: "photo-caption" },
+];
 let lastMeasuredHeight = 0;
 
 const getMeasuredPageHeight = () => {
@@ -185,9 +195,61 @@ const rebuildBackground = () => {
   }, 80);
 };
 
+const loadEditableContent = () => {
+  try {
+    return JSON.parse(window.localStorage.getItem(EDITABLE_STORAGE_KEY) || "{}");
+  } catch (error) {
+    return {};
+  }
+};
+
+const saveEditableContent = (contentMap) => {
+  window.localStorage.setItem(
+    EDITABLE_STORAGE_KEY,
+    JSON.stringify(contentMap)
+  );
+};
+
+const initializeEditableContent = () => {
+  const savedContent = loadEditableContent();
+
+  // Register each text field independently so the pink headings and the body
+  // copy can be edited and saved as separate pieces.
+  EDITABLE_GROUPS.forEach(({ selector, prefix }) => {
+    document.querySelectorAll(selector).forEach((element, index) => {
+      const editId = `${prefix}-${index + 1}`;
+      const savedValue = savedContent[editId];
+
+      element.classList.add("editable-copy");
+      element.dataset.editId = editId;
+      element.setAttribute("contenteditable", "true");
+      element.setAttribute("spellcheck", "true");
+
+      if (typeof savedValue === "string") {
+        element.textContent = savedValue;
+      }
+
+      element.addEventListener("focus", () => {
+        element.classList.add("is-editing");
+      });
+
+      element.addEventListener("blur", () => {
+        element.classList.remove("is-editing");
+      });
+
+      element.addEventListener("input", () => {
+        savedContent[editId] = element.textContent ?? "";
+        saveEditableContent(savedContent);
+        rebuildBackground();
+      });
+    });
+  });
+};
+
 buildBackgroundStrips();
 buildStickerLayout();
 requestParallaxUpdate();
+initializeEditableContent();
 
 window.addEventListener("scroll", requestParallaxUpdate, { passive: true });
 window.addEventListener("resize", rebuildBackground);
