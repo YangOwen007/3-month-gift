@@ -1,6 +1,7 @@
 const stripContainer = document.getElementById("background-strips");
 const stickerSlots = Array.from(document.querySelectorAll(".sticker-slot"));
 const pageShell = document.querySelector(".page-shell");
+const heroSection = document.querySelector(".hero");
 const storyColumn = document.querySelector(".story-column");
 const mobileBreakpoint = window.matchMedia("(max-width: 560px)");
 const tabletBreakpoint = window.matchMedia("(max-width: 860px)");
@@ -16,14 +17,13 @@ let lastMeasuredHeight = 0;
 
 const getMeasuredPageHeight = () => {
   const lastStoryBlock = storyColumn?.lastElementChild;
-  const shellHeight = pageShell?.scrollHeight ?? 0;
-  const documentHeight = Math.max(
-    document.documentElement.scrollHeight,
-    document.body.scrollHeight
-  );
+  const heroBottom = heroSection
+    ? heroSection.offsetTop + heroSection.offsetHeight
+    : 0;
+  const shellHeight = pageShell?.offsetHeight ?? 0;
 
   if (!storyColumn || !lastStoryBlock) {
-    return Math.max(shellHeight, documentHeight);
+    return Math.max(shellHeight, heroBottom);
   }
 
   const storyStyles = window.getComputedStyle(storyColumn);
@@ -31,10 +31,10 @@ const getMeasuredPageHeight = () => {
   const storyContentBottom =
     storyColumn.offsetTop + lastStoryBlock.offsetTop + lastStoryBlock.offsetHeight;
 
-  return Math.max(
-    documentHeight,
-    shellHeight,
-    Math.ceil(storyContentBottom + storyBottomPadding)
+  // Measure only the real in-flow content so the oversized decorative
+  // background never feeds back into sticker placement or page length.
+  return Math.ceil(
+    Math.max(shellHeight, heroBottom, storyContentBottom + storyBottomPadding)
   );
 };
 
