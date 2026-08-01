@@ -98,6 +98,15 @@ img {
   letter-spacing: 0.04em;
 }
 
+.sticker-image-face {
+  padding: 0.15rem;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  object-fit: contain;
+}
+
 .sticker-face-primary {
   animation: sticker-swap-primary 6s steps(1, end) infinite;
 }
